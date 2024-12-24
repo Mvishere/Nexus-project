@@ -16,7 +16,3 @@ const PostCard = ({ post }) => {
   
   export default PostCard
   
-<<<<<<< Updated upstream
-=======
-  
->>>>>>> Stashed changes
