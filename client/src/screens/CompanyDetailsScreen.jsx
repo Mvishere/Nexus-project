@@ -26,13 +26,13 @@ const CompanyDetailsScreen = () => {
   }, [id])
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+    <div className="container mx-auto px-4 py-8 bg-black min-h-screen">
+      <div className="bg-gray-800 shadow-md rounded-lg p-6 mb-8">
         <div className="flex items-center mb-4">
           <img src={company.logo} alt={company.name} className="w-16 h-16 mr-4" />
           <div>
-            <h1 className="text-3xl font-bold">{company.name}</h1>
-            <p className="text-gray-600">{company.industry}</p>
+            <h1 className="text-3xl font-bold text-white">{company.name}</h1>
+            <p className="text-gray-400">{company.industry}</p>
           </div>
         </div>
         <a href={company.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
@@ -42,7 +42,7 @@ const CompanyDetailsScreen = () => {
           Follow Company
         </button>
       </div>
-      <h2 className="text-2xl font-bold mb-4">Interview Experiences</h2>
+      <h2 className="text-2xl font-bold mb-4 text-white">Interview Experiences</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map(post => (
           <PostCard key={post.id} post={post} />

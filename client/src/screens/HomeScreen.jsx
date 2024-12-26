@@ -20,12 +20,12 @@ const HomeScreen = () => {
   )
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Recent Interview Experiences</h1>
+    <div className="container mx-auto px-4 py-8 bg-black min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-white">Recent Interview Experiences</h1>
       <input
         type="text"
         placeholder="Filter by company, title, or tag"
-        className="w-full p-2 mb-4 border rounded"
+        className="w-full p-2 mb-8 border rounded bg-gray-800 text-white border-gray-700"
         onChange={(e) => setFilter(e.target.value)}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
