@@ -1,3 +1,3 @@
-const DB_NAME = "Nexus website update"
+const DB_NAME = "test"
 
 export { DB_NAME }
