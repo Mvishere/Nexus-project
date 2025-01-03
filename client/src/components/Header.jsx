@@ -17,7 +17,7 @@ const Header = () => {
           <li><Link to="/about" className="hover:text-blue-400 transition-colors">About</Link></li>
         </ul>
         <Link 
-          to="/login" 
+          to="/signin" 
           className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-md transition-colors"
         >
           Login
@@ -28,4 +28,3 @@ const Header = () => {
 }
 
 export default Header
-

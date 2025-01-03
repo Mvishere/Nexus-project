@@ -5,11 +5,13 @@ import HomeScreen from './screens/HomeScreen'
 import CompanyDetailsScreen from './screens/CompanyDetailsScreen'
 import CompaniesScreen from './screens/CompaniesScreen'
 import CreatePostScreen from './screens/CreatePostScreen'
+import SignUp from './components/SignUp'
+import SignIn from './components/SignIn'
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-gray-900 text-white">
         <Header />
         <main className="flex-grow">
           <Routes>
@@ -17,6 +19,8 @@ function App() {
             <Route path="/companies" element={<CompaniesScreen />} />
             <Route path="/company/:id" element={<CompanyDetailsScreen />} />
             <Route path="/create-post" element={<CreatePostScreen />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
           </Routes>
         </main>
         <Footer />
@@ -26,4 +30,3 @@ function App() {
 }
 
 export default App
-
