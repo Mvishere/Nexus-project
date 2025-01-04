@@ -5,12 +5,15 @@ import {
     updatePost,
     deletePost
 } from '../controllers/post.controller.js'
+import { verifyJWT } from '../middlewares/auth.middleware.js'
 
 const router = Router()
 
 router.get('/', getAllPosts)
-router.post('/create', createPost)
-router.put('/update/:id', updatePost)
-router.delete('/delete/:id', deletePost)
+
+//Secured routes
+router.route('/create').post(verifyJWT, createPost)
+router.route('/update/:id').put(verifyJWT, updatePost)
+router.route('/delete/:id').delete(verifyJWT, deletePost)
 
 export default router

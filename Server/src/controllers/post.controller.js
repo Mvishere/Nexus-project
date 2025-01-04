@@ -1,3 +1,6 @@
+import { Post } from "../models/post.model.js"
+import { Company } from "../models/company.model.js"
+
 const getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find({})
@@ -15,9 +18,19 @@ const getAllPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
     try {
-        const { title, content, author, category } = req.body
+        const { title, description, companyName, tags } = req.body
 
-        if (!title || !content) {
+        const author = req.user._id
+        const company = await Company.findOne({ companyName: companyName })
+
+        if (!company) {
+            return res.status(400).json({
+                success: false,
+                message: "Company not found"
+            })
+        }
+
+        if (!title || !description) {
             return res.status(400).json({
                 success: false,
                 message: "Title and content are required"
@@ -26,15 +39,17 @@ const createPost = async (req, res) => {
 
         const post = await Post.create({
             title,
-            content,
-            author,
-            category
+            userId: author,
+            companyId: company._id,
+            description,
+            tags,
         })
 
         return res.status(201).json({
             success: true,
             post
         })
+
     } catch (error) {
         return res.status(500).json({
             success: false,

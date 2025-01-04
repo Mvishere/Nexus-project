@@ -1,5 +1,4 @@
 import { User } from '../models/user.model.js';
-import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
@@ -18,7 +17,10 @@ const generateAccessAndRefreshTokens = async (userId) => {
         return { accessToken, refreshToken }
 
     } catch (error) {
-        throw new ApiError(500, "Failed to generate tokens")
+        res.status(500).json({
+            success: false,
+            message: "Failed to generate tokens"
+        })
     }
 }
 
@@ -40,7 +42,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
         if (avatarLocalPath) {
             fs.unlinkSync(avatarLocalPath);
         }
-        throw new ApiError(400, "All fields are required");
+        return res.status(400).json({
+            success: false,
+            message: "All fields are required",
+        });
     }
 
     const existingUser = await User.findOne({ email });
@@ -49,7 +54,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
         if (avatarLocalPath) {
             fs.unlinkSync(avatarLocalPath);
         }
-        throw new ApiError(409, "User with this email already exists");
+        return res.status(409).json({
+            success: false,
+            message: "User already exists",
+        });
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
@@ -71,7 +79,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
         if (avatarLocalPath) {
             fs.unlinkSync(avatarLocalPath);
         }
-        throw new ApiError(500, "Failed to register user");
+        return res.status(500).json({
+            success: false,
+            message: "Failed to register user",
+        })
     }
 
     return res.status(201).json(
@@ -84,19 +95,28 @@ const loginUser = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        throw new ApiError(400, "Email and password are required");
+        return res.status(400).json({
+            success: false,
+            message: "Email and password are required"
+        });
     }
 
     const user = await User.findOne({ email: email });
 
     if (!user) {
-        throw new ApiError(404, "User not found");
+        return res.status(404).json({
+            success: false,
+            message: "User not found"
+        });
     }
 
     const isPasswordValid = await user.comparePassword(password);
 
     if (!isPasswordValid) {
-        throw new ApiError(401, "Invalid email or password");
+        return res.status(401).json({
+            success: false,
+            message: "Invalid password"
+        });
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
@@ -149,7 +169,10 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
     if (!incomingRefreshToken) {
-        throw new ApiError(401, "Unauthorized request")
+        return res.status(401).json({
+            success: false,
+            message: "Refresh token is required"
+        })
     }
 
     try {
@@ -157,11 +180,17 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
         const user = await User.findById(decodedToken._id)
 
         if (!user) {
-            throw new ApiError(401, "Invalid refresh token")
+            return res.status(401).json({
+                success: false,
+                message: "Invalid refresh token"
+            })
         }
 
         if (incomingRefreshToken != user?.refreshToken) {
-            throw new ApiError(401, "Refresh token is expired or used")
+            return res.status(401).json({
+                success: false,
+                message: "Refresh token is used or expired"
+            })
         }
 
         const options = {
@@ -183,7 +212,10 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
                 )
             )
     } catch (error) {
-        throw new ApiError(401, error?.message || "Invalid refresh token")
+        return res.status(401).json({
+            success: false,
+            message: error?.message || "Invalid refresh token"
+        })
     }
 })
 

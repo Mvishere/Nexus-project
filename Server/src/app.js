@@ -21,6 +21,6 @@ import userRoutes from './routes/user.routes.js';
 // routes
 app.use("/api/p1/users/", userRoutes);
 
-app.use('/api/v1/posts', postRouter)
+app.use('/api/p1/posts', postRouter)
 
 export { app }
