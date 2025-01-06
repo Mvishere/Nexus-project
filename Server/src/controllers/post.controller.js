@@ -61,15 +61,33 @@ const createPost = async (req, res) => {
 const updatePost = async (req, res) => {
     try {
         const { id } = req.params
-        const { title, content, category } = req.body
+        const { title, description, tags } = req.body
 
-        const post = await Post.findByIdAndUpdate(
+        const post = await Post.findById(id)
+
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found"
+            })
+        }
+
+        console.log(post.userId, req.user._id)
+
+        if (post.userId.toString() !== req.user._id.toString()) {
+            return res.status(401).json({
+                success: false,
+                message: "You can't update posts from other users"
+            })
+        }
+
+        const updatedPost = await Post.findByIdAndUpdate(
             id,
             {
                 $set: {
                     title,
-                    content,
-                    category
+                    description,
+                    tags,
                 }
             },
             { new: true }
@@ -77,7 +95,7 @@ const updatePost = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            post
+            updatedPost
         })
     } catch (error) {
         return res.status(500).json({
@@ -90,6 +108,23 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
     try {
         const { id } = req.params
+
+        const post = await Post.findById(id)
+
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found"
+            })
+        }
+
+        if (post.userId.toString() !== req.user._id.toString()) {
+            return res.status(401).json({
+                success: false,
+                message: "You can't delete posts from other users"
+            })
+        }
+
         await Post.findByIdAndDelete(id)
 
         return res.status(200).json({
