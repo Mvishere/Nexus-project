@@ -18,8 +18,8 @@ router.route("/register").post(
 router.route("/login").post(loginUser);
 
 // Secured Routes
-router.route("/logout").get(verifyJWT, logoutUser)
-router.route("/refresh-token").get(refreshAccessToken)
+router.route("/logout").post(verifyJWT, logoutUser)
+router.route("/refresh-token").post(refreshAccessToken)
 
 
 
