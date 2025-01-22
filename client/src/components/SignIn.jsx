@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { SERVER_URL } from '../App';
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -7,14 +10,29 @@ const SignIn = () => {
     password: '',
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement sign-in logic
-    console.log('Sign in data:', formData);
+
+    const submit = async () => {
+      try {
+        const response = await axios.post(`${SERVER_URL}/users/login`, formData, {
+          withCredentials: true,
+        });
+
+        const user = response.data.data.user;
+        console.log(user);
+        navigate('/');
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    submit();
   };
 
   return (

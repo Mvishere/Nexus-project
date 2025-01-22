@@ -9,9 +9,8 @@ import { verifyJWT } from '../middlewares/auth.middleware.js'
 
 const router = Router()
 
-router.get('/', getAllPosts)
-
 //Secured routes
+router.route('/').get(verifyJWT, getAllPosts)
 router.route('/create').post(verifyJWT, createPost)
 router.route('/update/:id').put(verifyJWT, updatePost)
 router.route('/delete/:id').delete(verifyJWT, deletePost)

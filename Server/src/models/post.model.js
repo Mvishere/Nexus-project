@@ -7,6 +7,10 @@ const postSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        companyName: {
+            type: String,
+            required: true,
+        },
         companyId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Company",
@@ -50,5 +54,7 @@ const postSchema = new mongoose.Schema(
         }
     }, { timestamps: true }
 )
+
+// stipend, off campus/on campus, 2 month 6 month placement
 
 export const Post = mongoose.model("Post", postSchema);

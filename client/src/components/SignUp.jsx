@@ -1,7 +1,9 @@
 // src/pages/auth/SignUp.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Camera } from 'lucide-react';
+import { SERVER_URL } from '../App';
+import axios from 'axios';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +18,7 @@ const SignUp = () => {
 
   const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors = {};
@@ -66,6 +69,21 @@ const SignUp = () => {
         avatar: formData.avatar ? formData.avatar.name : null
       });
     }
+    try {
+      const register = async () => {
+        const res = await axios.post(`${SERVER_URL}/users/register`, formData);
+        console.log(res)
+        await axios.post(`${SERVER_URL}/users/login`, {
+          email: formData.email,
+          password: formData.password
+        })
+        navigate("/")
+      }
+      register();
+
+    } catch (error) {
+      console.log("Error registering", error)
+    }
   };
 
   const handleImageReset = () => {
@@ -95,9 +113,8 @@ const SignUp = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${
-                  errors.username ? 'border-red-500' : 'border-gray-600'
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${errors.username ? 'border-red-500' : 'border-gray-600'
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
               />
               {errors.username && <p className="mt-1 text-sm text-red-500">{errors.username}</p>}
             </div>
@@ -111,9 +128,8 @@ const SignUp = () => {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${
-                  errors.fullName ? 'border-red-500' : 'border-gray-600'
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${errors.fullName ? 'border-red-500' : 'border-gray-600'
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
               />
               {errors.fullName && <p className="mt-1 text-sm text-red-500">{errors.fullName}</p>}
             </div>
@@ -129,9 +145,8 @@ const SignUp = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${
-                errors.email ? 'border-red-500' : 'border-gray-600'
-              } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+              className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${errors.email ? 'border-red-500' : 'border-gray-600'
+                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
             />
             {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
           </div>
@@ -147,9 +162,8 @@ const SignUp = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${
-                  errors.password ? 'border-red-500' : 'border-gray-600'
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${errors.password ? 'border-red-500' : 'border-gray-600'
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
               />
               {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
             </div>
@@ -163,9 +177,8 @@ const SignUp = () => {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${
-                  errors.confirmPassword ? 'border-red-500' : 'border-gray-600'
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                className={`w-full px-4 py-3 text-white bg-gray-700/50 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-600'
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
               />
               {errors.confirmPassword && <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>}
             </div>

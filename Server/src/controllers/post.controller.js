@@ -42,6 +42,7 @@ const createPost = async (req, res) => {
             userId: author,
             companyId: company._id,
             description,
+            companyName: companyName,
             tags,
         })
 
