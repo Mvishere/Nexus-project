@@ -9,6 +9,8 @@ import SignUp from './components/SignUp'
 import SignIn from './components/SignIn'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import PostDetailsScreen from './screens/PostDetailsScreen'
+
 
 function App() {
   const [user, setUser] = useState({})
@@ -42,6 +44,7 @@ function App() {
             <Route path="/create-post" element={<CreatePostScreen />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/post/:id" element={<PostDetailsScreen />} />
           </Routes>
         </main>
         <Footer />
