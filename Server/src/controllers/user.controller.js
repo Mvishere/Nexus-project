@@ -219,4 +219,17 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
     }
 })
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken }; 
+const getUser = asyncHandler(async (req, res, next) => {
+    const user = await User.findById(req.user._id).select("-password -refreshToken")
+
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            message: "User not found"
+        })
+    }
+
+    return res.status(200).json(new ApiResponse(200, user, "User details"))
+})
+
+export { registerUser, loginUser, logoutUser, refreshAccessToken, getUser }; 

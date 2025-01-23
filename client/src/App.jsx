@@ -7,12 +7,33 @@ import CompaniesScreen from './screens/CompaniesScreen'
 import CreatePostScreen from './screens/CreatePostScreen'
 import SignUp from './components/SignUp'
 import SignIn from './components/SignIn'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 function App() {
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${SERVER_URL}/users/me`, {
+          withCredentials: true
+        })
+        if (res.status == 200) {
+          setUser(res.data.data)
+        }
+      } catch (error) {
+        console.log("error fetching user details", error)
+      }
+    }
+    fetchUser()
+  }, [user]);
+
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-gray-900 text-white">
-        <Header />
+        <Header user={user} />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomeScreen />} />

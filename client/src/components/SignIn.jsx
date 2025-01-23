@@ -25,13 +25,12 @@ const SignIn = () => {
           withCredentials: true,
         });
 
-        const user = response.data.data.user;
-        console.log(user);
+        const user = response.data.data;
         navigate('/');
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     submit();
   };
 
