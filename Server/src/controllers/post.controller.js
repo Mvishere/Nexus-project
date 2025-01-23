@@ -140,9 +140,20 @@ const deletePost = async (req, res) => {
     }
 }
 
+const getPost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        res.json({ post })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+
+}
+
 export {
     getAllPosts,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    getPost
 }
