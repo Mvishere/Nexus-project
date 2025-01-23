@@ -18,10 +18,12 @@ const getAllPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
     try {
-        const { title, description, companyName, tags } = req.body
+        const { title, content, companyName, tags } = req.body
 
         const author = req.user._id
         const company = await Company.findOne({ companyName: companyName })
+
+        const tagArr = tags.split(",")
 
         if (!company) {
             return res.status(400).json({
@@ -30,7 +32,7 @@ const createPost = async (req, res) => {
             })
         }
 
-        if (!title || !description) {
+        if (!title || !content) {
             return res.status(400).json({
                 success: false,
                 message: "Title and content are required"
@@ -41,20 +43,21 @@ const createPost = async (req, res) => {
             title,
             userId: author,
             companyId: company._id,
-            description,
+            description: content,
             companyName: companyName,
-            tags,
+            tags: tagArr,
         })
 
         return res.status(201).json({
             success: true,
-            post
+            // post
         })
 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
-            message: "Error creating post"
+            message: "Error creating post",
         })
     }
 }
@@ -140,9 +143,30 @@ const deletePost = async (req, res) => {
     }
 }
 
+const addComment = async (req, res) => {
+    const { comment, userId } = req.body
+    const postId = req.params.id
+    const post = await Post.findById(postId)
+
+    if (!post) {
+        return res.status(404).json({
+            success: false,
+            message: "Post not found"
+        })
+    }
+
+    // logic to add comment to post model
+
+    return res.status(200).json({
+        success: true,
+        message: "comment added successfully"
+    })
+}
+
 export {
     getAllPosts,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    addComment
 }

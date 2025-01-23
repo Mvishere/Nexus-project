@@ -1,18 +1,31 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { SERVER_URL } from '../App'
+import axios from 'axios'
 
 const CreatePostScreen = () => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     title: '',
-    company: '',
+    companyName: '',
     content: '',
     tags: ''
   })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Handle form submission
+    try {
+      const uploadPost = async () => {
+        console.log(formData)
+        const res = await axios.post(`${SERVER_URL}/posts/create`, formData, {
+          withCredentials: true
+        })
+        console.log(res)
+      }
+      uploadPost()
+    } catch (error) {
+      console.log(error)
+    }
     navigate('/')
   }
 
@@ -40,11 +53,11 @@ const CreatePostScreen = () => {
               <label className="block text-sm font-medium mb-2">Company</label>
               <input
                 type="text"
-                name="company"
+                name="companyName"
                 className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="E.g., Google"
-                value={formData.company}
-                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                value={formData.companyName}
+                onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
               />
             </div>
 
