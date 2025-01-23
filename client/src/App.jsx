@@ -7,6 +7,8 @@ import CompaniesScreen from './screens/CompaniesScreen'
 import CreatePostScreen from './screens/CreatePostScreen'
 import SignUp from './components/SignUp'
 import SignIn from './components/SignIn'
+import PostDetailsScreen from './screens/PostDetailsScreen'
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
             <Route path="/create-post" element={<CreatePostScreen />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/post/:id" element={<PostDetailsScreen />} />
           </Routes>
         </main>
         <Footer />
